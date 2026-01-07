@@ -1,5 +1,24 @@
 # Changelog
 
+## Version 4.1.0
+  New: 
+  1. The `sendSettingEvent` method has been added to SettingController.
+
+    Example Usage:
+
+    ```cpp
+    // for device
+    SinricProSwitch& mySwitch = SinricPro[SWITCH_ID];
+    mySwitch.sendSettingEvent("brightness", 75); // Send int setting
+
+    // for module
+    int rssi = WiFi.RSSI();
+    SinricPro.sendSettingEvent('wifi_rssi', rssi);
+    ```
+
+  2. Validate APP_KEY, APP_SECRET, DEVICE_ID
+
+
 ## Version 4.0.0
 
 - **BREAKING CHANGE**: Updated the callback signature in `SettingController.h` to use the `SettingValue` class instead of `String` for setting values. 
