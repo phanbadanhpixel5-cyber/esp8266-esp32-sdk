@@ -1,0 +1,36 @@
+name: Build ESP32 Firmware
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install Arduino CLI
+        uses: arduino/setup-arduino-cli@v1
+
+      - name: Install ESP32 board
+        run: |
+          arduino-cli core update-index --config-file arduino-cli.yaml
+          arduino-cli core install esp32:esp32
+
+      - name: Install libraries
+        run: |
+          arduino-cli lib install "SinricPro"
+          arduino-cli lib install "ArduinoJson"
+          arduino-cli lib install "WebSockets"
+
+      - name: Build firmware
+        run: |
+          arduino-cli compile \
+            --fqbn esp32:esp32:esp32s3 \
+            --output-dir build \
+            main.ino
+
+      - name: Upload .bin file
+        uses: actions/upload-artifact@v3
+        with:
+          name: firmware
+          path: build/*.bin
